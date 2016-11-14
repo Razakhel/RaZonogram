@@ -1,7 +1,7 @@
 # RaZonogram
 Basic command-line Nonogram/Picross game/solver.
 
-<p align="center">![Nonogram example](https://upload.wikimedia.org/wikipedia/commons/d/d0/Nonogram2.jpg)</p>
+![Nonogram example](https://upload.wikimedia.org/wikipedia/commons/d/d0/Nonogram2.jpg)
 
 ## The game
 
@@ -36,7 +36,7 @@ These three examples, while different from each other, have 2 contiguous filled 
 
 Here is an example of a nonogram being solved; filled tiles appear black, while denied ones are crossed.
 
-<p align="center">![Nonogram example](https://upload.wikimedia.org/wikipedia/commons/6/64/Paint_by_numbers_Animation.gif)</p>
+![Nonogram example](https://upload.wikimedia.org/wikipedia/commons/6/64/Paint_by_numbers_Animation.gif)
 
 ## External links
 
