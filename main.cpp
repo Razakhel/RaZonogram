@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
         std::string line;
 
         while (std::getline(fs, line)) {
-          std::cout << line << " => " << lineNumber << std::endl;
           if (lineNumber > 1) { // If the line isn't the first one (which is <height width>)
             std::vector<std::string> vals;
 
@@ -59,8 +58,7 @@ int main(int argc, char* argv[]) {
   std::cout << "Original grid:" << std::endl;
   std::cout << grid << std::endl;
 
-  Grid solvedGrid = grid.solve();
-
+  Grid solvedGrid{grid.solve()};
   std::cout << "Solved grid:" << std::endl;
   std::cout << solvedGrid << std::endl;
 

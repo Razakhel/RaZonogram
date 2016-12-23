@@ -2,14 +2,16 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
+enum State { EMPTY = 0, FILLED, DENIED };
+
 class Tile {
 public:
   Tile() : state{EMPTY} {}
 
-  enum STATES { EMPTY = 0, FILLED, DENIED };
+  State getState() { return state; }
 
 private:
-  bool state;
+  State state;
 };
 
 #endif // TILE_HPP

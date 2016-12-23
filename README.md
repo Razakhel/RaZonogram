@@ -1,5 +1,5 @@
 # RaZonogram
-Basic command-line Nonogram/Picross game/solver.
+Basic command-line Nonogram/Picross game & solver.
 
 ![Nonogram example](https://upload.wikimedia.org/wikipedia/commons/d/d0/Nonogram2.jpg)
 
