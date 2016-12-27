@@ -60,12 +60,26 @@ const bool Grid::loadFromFile(const std::string& fileName) {
 Grid& Grid::solve() { return *this; }
 
 std::ostream& operator<<(std::ostream& os, const Grid& grid) {
-  for (unsigned int height = 0; height < grid.getGrid().size(); ++height) { // For each row
+  // For each entry in rows' clues, prints two spaces to make a margin (plus two for the starting '[ ')
+  // Ideally, should get the entry with maximum number of clues and remove the last space
+  // TODO: should also handle numbers, not only digits
+  for (unsigned int i = 0; i <= grid.getRowClues()[0].size(); ++i)
+    os << "  ";
 
+  for (unsigned int colIndex = 0; colIndex < grid.getColClues().size(); ++colIndex) // Prints columns' clues
+    os << grid.getColClues()[colIndex][0] << ' ';
+  os << std::endl;
+
+  for (unsigned int height = 0; height < grid.getGrid().size(); ++height) { // For each row
     for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) { // Prints rows' clues
       os << grid.getRowClues()[height][rowIndex] << ' ';
     }
 
+    // Prints the whole grid in the form:
+    // [ X O X ]
+    // [ - O X ]
+    // [ - O - ]
+    // Where the tiles marked as 'O' are filled, those with an 'X' are denied, and '-' means it's empty
     os << "[ ";
     for (unsigned int width = 0; width < grid.getGrid()[height].size(); ++width) { // For each tile
       char res = '-';
