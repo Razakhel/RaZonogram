@@ -4,14 +4,16 @@
 
 #include <vector>
 #include <iostream>
+
 #include "Tile.hpp"
 
 class Grid {
 public:
-  Grid(const unsigned int& height, const unsigned int& width);
+  Grid();
 
   std::vector<std::vector<Tile>> getGrid() const { return grid; }
 
+  const bool loadFromFile(const std::string& fileName);
   Grid& solve();
 
 private:
