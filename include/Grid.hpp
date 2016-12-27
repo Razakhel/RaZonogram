@@ -11,6 +11,8 @@ class Grid {
 public:
   Grid();
 
+  std::vector<std::vector<int>> getColClues() const { return colClues; }
+  std::vector<std::vector<int>> getRowClues() const { return rowClues; }
   std::vector<std::vector<Tile>> getGrid() const { return grid; }
 
   const bool loadFromFile(const std::string& fileName);

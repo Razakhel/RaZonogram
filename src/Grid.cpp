@@ -60,11 +60,16 @@ const bool Grid::loadFromFile(const std::string& fileName) {
 Grid& Grid::solve() { return *this; }
 
 std::ostream& operator<<(std::ostream& os, const Grid& grid) {
-  for (unsigned int i = 0; i < grid.getGrid().size(); ++i) { //TODO: make it clearer?
+  for (unsigned int height = 0; height < grid.getGrid().size(); ++height) { // For each row
+
+    for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) { // Prints rows' clues
+      os << grid.getRowClues()[height][rowIndex] << ' ';
+    }
+
     os << "[ ";
-    for (unsigned int j = 0; j < grid.getGrid()[i].size(); ++j) {
+    for (unsigned int width = 0; width < grid.getGrid()[height].size(); ++width) { // For each tile
       char res = '-';
-      switch (grid.getGrid()[i][j].getState()) {
+      switch (grid.getGrid()[height][width].getState()) { // Prints ouput depending of the tile's state
         case FILLED:
           res = 'O';
           break;
