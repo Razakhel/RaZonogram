@@ -9,17 +9,20 @@
 Grid::Grid() {}
 
 const bool Grid::loadFromFile(const std::string& fileName) {
-  unsigned int height, width;
+  if (std::ifstream fs{fileName}) { // If the file could have been opened
+    unsigned int height, width;
 
-  if (std::ifstream fs{fileName}) {
+    // Fetching height & width of the grid from the first 2 characters
     fs >> height >> width;
     colClues.resize(height);
     rowClues.resize(width);
-    grid.resize(height);
 
+    // Resizing the grid accordingly
+    grid.resize(height);
     for (unsigned int i = 0; i < height; ++i)
       grid[i].resize(width);
 
+    // Fetching grid's clues
     {
       int value, lineNumber = 1;
       std::string line;
@@ -29,7 +32,7 @@ const bool Grid::loadFromFile(const std::string& fileName) {
           std::vector<std::string> vals;
 
           if (lineNumber == 2) { // Second line is column's
-            /* Filling columns' clues */
+            // Filling columns' clues
             Utils::split(line, ';', vals);
 
             for (unsigned int i = 0; i < vals.size(); ++i) {
@@ -38,7 +41,7 @@ const bool Grid::loadFromFile(const std::string& fileName) {
                 colClues[i].push_back(value);
             }
           } else if (lineNumber == 3) { // Third line is row's
-            /* Filling rows' clues */
+            // Filling rows' clues
             Utils::split(line, ';', vals);
 
             for (unsigned int i = 0; i < vals.size(); ++i) {
@@ -57,7 +60,7 @@ const bool Grid::loadFromFile(const std::string& fileName) {
   return true;
 }
 
-Grid& Grid::solve() { return *this; }
+Grid& Grid::solve() { return *this; } //TODO: implement solver
 
 std::ostream& operator<<(std::ostream& os, const Grid& grid) {
   // For each entry in rows' clues, prints two spaces to make a margin (plus two for the starting '[ ')
@@ -71,9 +74,8 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid) {
   os << std::endl;
 
   for (unsigned int height = 0; height < grid.getGrid().size(); ++height) { // For each row
-    for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) { // Prints rows' clues
+    for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) // Prints rows' clues
       os << grid.getRowClues()[height][rowIndex] << ' ';
-    }
 
     // Prints the whole grid in the form:
     // [ X O X ]
@@ -95,7 +97,18 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid) {
       }
       os << res << ' ';
     }
-    os << ']' << std::endl;
+    os << "] ";
+
+    for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) // Prints rows' clues
+      os << grid.getRowClues()[height][rowIndex] << ' ';
+    os << std::endl;
   }
-  return os;
+
+  // Prints margin again at the bottom of the grid
+  for (unsigned int i = 0; i <= grid.getRowClues()[0].size(); ++i)
+    os << "  ";
+  for (unsigned int colIndex = 0; colIndex < grid.getColClues().size(); ++colIndex) // Prints columns' clues
+    os << grid.getColClues()[colIndex][0] << ' ';
+
+  return os << std::endl;
 }
