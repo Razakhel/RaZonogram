@@ -86,7 +86,7 @@ const Grid Grid::solve() { //TODO: implement solver
     for (unsigned int j = 0; j < rowClues[i].size(); ++j)
       rowCluesTotal[i] += rowClues[i][j];
 
-  // Calculates the cumulated amount of clues for each column
+  // Same for each column
   for (unsigned int i = 0; i < colClues.size(); ++i)
     for (unsigned int j = 0; j < colClues[i].size(); ++j)
       colCluesTotal[i] += colClues[i][j];
