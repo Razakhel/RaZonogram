@@ -16,7 +16,7 @@ public:
   std::vector<std::vector<Tile>> getGrid() const { return grid; }
 
   const bool loadFromFile(const std::string& fileName);
-  Grid& solve();
+  const Grid solve();
 
 private:
   std::vector<std::vector<int>> colClues;
