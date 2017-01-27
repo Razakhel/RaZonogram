@@ -5,8 +5,8 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../include/Grid.hpp"
-#include "../include/Utils.hpp"
+#include "Grid.hpp"
+#include "Utils.hpp"
 
 Grid::Grid() {}
 

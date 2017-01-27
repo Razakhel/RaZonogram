@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "include/Game.hpp"
-#include "include/Grid.hpp"
+#include "Game.hpp"
+#include "Grid.hpp"
 
 int main(int argc, char* argv[]) {
   Game game;

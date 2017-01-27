@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "../include/Game.hpp"
+#include "Game.hpp"
 
 Game::Game() {}
 
