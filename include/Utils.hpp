@@ -14,5 +14,5 @@ namespace Utils {
       if (!item.empty()) elems.push_back(item);
     }
   }
-  
+
 }

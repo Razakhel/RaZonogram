@@ -10,7 +10,6 @@
 
 Grid::Grid() {}
 
-
 const bool Grid::loadFromFile(const std::string& fileName) {
   if (std::ifstream fs{fileName}) { // If the file could have been opened
     unsigned int height, width;
@@ -19,11 +18,13 @@ const bool Grid::loadFromFile(const std::string& fileName) {
     fs >> height >> width;
     colClues.resize(height);
     rowClues.resize(width);
+    boardHeight = height;
+    boardWidth = width;
 
     // Resizing the grid accordingly
-    grid.resize(height);
+    board.resize(height);
     for (unsigned int i = 0; i < height; ++i)
-      grid[i].resize(width);
+      board[i].resize(width);
 
     // Fetching grid's clues
     int value, lineNumber = 1;
@@ -75,31 +76,47 @@ const bool Grid::loadFromFile(const std::string& fileName) {
 //   When the line's been processed, substract the number of tiles filled or denied to the line's total amount available
 //   From there go to the next biggest line
 //   Repeat until the grid is solved
-const Grid Grid::solve() { //TODO: implement solver
-  Grid solvedGrid = *this;
-  std::vector<int> rowCluesTotal(rowClues.size());
-  std::vector<int> colCluesTotal(colClues.size());
+Grid& Grid::solve() { //TODO: implement solver
+  Grid& solvedGrid = *this;
+  std::vector<int> totalRowClues(rowClues.size());
+  std::vector<int> totalColClues(colClues.size());
   std::vector<int>::iterator rowMax, colMax;
 
   // Calculates the cumulated amount of clues for each row
   for (unsigned int i = 0; i < rowClues.size(); ++i)
     for (unsigned int j = 0; j < rowClues[i].size(); ++j)
-      rowCluesTotal[i] += rowClues[i][j];
+      totalRowClues[i] += rowClues[i][j];
 
   // Same for each column
   for (unsigned int i = 0; i < colClues.size(); ++i)
     for (unsigned int j = 0; j < colClues[i].size(); ++j)
-      colCluesTotal[i] += colClues[i][j];
+      totalColClues[i] += colClues[i][j];
 
-  rowMax = std::max_element(rowCluesTotal.begin(), rowCluesTotal.end());
-  colMax = std::max_element(colCluesTotal.begin(), colCluesTotal.end());
-  std::cout << std::distance(rowCluesTotal.begin(), rowMax) << std::endl;
-  std::cout << std::distance(colCluesTotal.begin(), colMax) << std::endl;
+  rowMax = std::max_element(totalRowClues.begin(), totalRowClues.end());
+  colMax = std::max_element(totalColClues.begin(), totalColClues.end());
+  std::cout << std::distance(totalRowClues.begin(), rowMax) << std::endl;
+  std::cout << std::distance(totalColClues.begin(), colMax) << std::endl;
 
   return solvedGrid;
 }
 
-std::ostream& operator<<(std::ostream& os, const Grid& grid) {
+// Checks if the grid is correct
+// If every row and column of the grid is filled with as many tiles as required by the clues, then it is solved
+const bool Grid::isComplete() { // TODO: complete the isComplete (completeception)
+  unsigned int totalTilesRow = 0, totalTilesCol = 0;
+
+  for (unsigned int i = 0; i < rowClues.size(); ++i)
+    for (unsigned int j = 0; j < rowClues[i].size(); ++j)
+      totalTilesRow += rowClues[i][j];
+
+  for (unsigned int i = 0; i < colClues.size(); ++i)
+    for (unsigned int j = 0; j < colClues[i].size(); ++j)
+      totalTilesCol += colClues[i][j];
+
+  return false;
+}
+
+std::ostream& operator<<(std::ostream& os, Grid& grid) {
   // For each entry in rows' clues, prints two spaces to make a margin (plus two for the starting '[ ')
   // Ideally, should get the entry with maximum number of clues and remove the last space
   // TODO: should also handle numbers, not only digits
@@ -110,7 +127,7 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid) {
     os << grid.getColClues()[colIndex][0] << ' ';
   os << std::endl;
 
-  for (unsigned int height = 0; height < grid.getGrid().size(); ++height) { // For each row
+  for (unsigned int height = 0; height < grid.getBoard().size(); ++height) { // For each row
     for (unsigned int rowIndex = 0; rowIndex < grid.getRowClues()[height].size(); ++rowIndex) // Prints rows' clues
       os << grid.getRowClues()[height][rowIndex] << ' ';
 
@@ -120,13 +137,13 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid) {
     // [ - O - ]
     // Where the tiles marked as 'O' are filled, those with an 'X' are denied, and '-' means it's empty
     os << "[ ";
-    for (unsigned int width = 0; width < grid.getGrid()[height].size(); ++width) { // For each tile
+    for (unsigned int width = 0; width < grid.getBoard()[height].size(); ++width) { // For each tile
       char res = '-';
-      switch (grid.getGrid()[height][width].getState()) { // Prints ouput depending of the tile's state
-        case FILLED:
+      switch (static_cast<State>(grid.getBoard()[height][width].state)) { // Prints ouput depending of the tile's state
+        case State::FILLED:
           res = 'O';
           break;
-        case DENIED:
+        case State::DENIED:
           res = 'X';
           break;
         default:

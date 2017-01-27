@@ -8,9 +8,6 @@ class Tile {
 public:
   Tile() : state{EMPTY} {}
 
-  State getState() { return state; }
-
-private:
   State state;
 };
 
