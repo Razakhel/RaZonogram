@@ -19,6 +19,7 @@ public:
 
   const bool loadFromFile(const std::string& fileName);
   Grid& solve();
+  void clear();
   const bool isComplete();
 
 private:

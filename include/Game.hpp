@@ -9,7 +9,7 @@ public:
   Game();
 
   Grid& getGrid() { return grid; }
-  void setGrid(Grid& grid) { this->grid = grid; }
+  void setGrid(const Grid& grid) { this->grid = grid; }
 
   void play();
 

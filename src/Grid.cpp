@@ -36,7 +36,7 @@ const bool Grid::loadFromFile(const std::string& fileName) {
     // a;b;c d;e f;g    <- Columns' clues
     // h i;j;k;l;m n    <- Rows' clues
     //
-    // When finding an ';' char, the algorithm moves to the next line
+    // When finding a ';' char, the algorithm moves to the next line
     // Within the same line, each clue is separated by a space
     while (std::getline(fs, line)) {
       if (lineNumber > 1) { // If the line isn't the first one (which is <height width>)
@@ -100,18 +100,32 @@ Grid& Grid::solve() { //TODO: implement solver
   return solvedGrid;
 }
 
+// Clears the grid by setting every tile to EMPTY
+void Grid::clear() {
+  for (unsigned int height = 0; height < boardHeight; ++height)
+    for (unsigned int width = 0; width < boardWidth; ++width)
+      board[height][width].state = State::EMPTY;
+}
+
 // Checks if the grid is correct
-// If every row and column of the grid is filled with as many tiles as required by the clues, then it is solved
-const bool Grid::isComplete() { // TODO: complete the isComplete (completeception)
-  unsigned int totalTilesRow = 0, totalTilesCol = 0;
+// If every row of the grid is filled with as many tiles as required by the clues, then it is solved
+// Could also work by calculating this for columns, since rows' total clues == columns' total clues
+const bool Grid::isComplete() { // TODO: finalize completion check (parse every row and check its own tiles)
+  unsigned int neededClues = 0, totalClues = 0;
 
-  for (unsigned int i = 0; i < rowClues.size(); ++i)
+  for (unsigned int i = 0; i < rowClues.size(); ++i) {
+    for (unsigned int width = 0; width < boardWidth; ++width)
+      if (board[i][width].state == State::FILLED)
+        ++totalClues;
+
     for (unsigned int j = 0; j < rowClues[i].size(); ++j)
-      totalTilesRow += rowClues[i][j];
+      neededClues += rowClues[i][j];
+  }
 
-  for (unsigned int i = 0; i < colClues.size(); ++i)
-    for (unsigned int j = 0; j < colClues[i].size(); ++j)
-      totalTilesCol += colClues[i][j];
+  std::cout << "totalClues = " << totalClues << ", neededClues = " << neededClues << std::endl;
+
+  if (totalClues == neededClues)
+    return true;
 
   return false;
 }
